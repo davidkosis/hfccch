@@ -1,0 +1,28 @@
+# Import necessary libraries
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+# Define your chatbot responses based on functions
+functions = {
+    "1": "Function 1: Booking of Mass",
+    "2": "Function 2: Paying of Offering",
+    "3": "Function 3: Complaint Handling",
+}
+
+# Define a function to handle user messages
+def get_response(message):
+    if message in functions:
+        return functions[message]
+    else:
+        return "I'm sorry, I don't understand that request."
+
+# Define a route for handling incoming messages
+@app.route('/chatbot', methods=['POST'])
+def chatbot():
+    user_message = request.json.get('message')
+    response = get_response(user_message)
+    return jsonify({"response": response})
+
+if __name__ == '__main__':
+    app.run(debug=True)
